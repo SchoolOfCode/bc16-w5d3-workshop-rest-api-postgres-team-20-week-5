@@ -10,18 +10,18 @@ export async function getAuthors() {
 }
 
 export async function getAuthorById(id) {
-  // Query the database and return the author with a matching id or null
-  // Query the database - save a variable containing the text for our query called queryText and call
-  // Await.pool function
-  // Pass the query text and id inside the function
-  //
   const queryText = "SELECT * FROM authors WHERE authors.id = $1";
   const author = await pool.query(queryText, [id]);
   return author.rows[0] || null;
 }
 
 export async function createAuthor(author) {
-  // Query the database to create an author and return the newly created author
+  const { firstName, lastName } = author;
+  const queryText =
+    "INSERT INTO authors (first_name, last_name ) VALUES ($1, $2) RETURNING *";
+  const values = [`${firstName}`, `${lastName}`];
+  const res = await pool.query(queryText, values);
+  return res.rows;
 }
 
 export async function updateAuthorById(id, updates) {
