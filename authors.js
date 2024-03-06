@@ -16,10 +16,16 @@ export async function getAuthorById(id) {
 }
 
 export async function createAuthor(author) {
+  // Destructure the argument
   const { firstName, lastName } = author;
-  const queryText =
-    "INSERT INTO authors (first_name, last_name ) VALUES ($1, $2) RETURNING *";
+
+  // Parameterize the query and values before passing to pool function
+  const queryText = `
+    INSERT INTO authors 
+    (first_name, last_name ) 
+    VALUES ($1, $2) RETURNING *`;
   const values = [`${firstName}`, `${lastName}`];
+  // return the response from the db query
   const res = await pool.query(queryText, values);
   return res.rows;
 }
