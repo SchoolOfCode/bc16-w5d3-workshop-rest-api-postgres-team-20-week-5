@@ -2,15 +2,22 @@
 import { pool } from "./db/index.js";
 
 export async function getAuthors() {
-  const authors = await pool.query(`
-    SELECT * FROM authors
-  `);
-  return authors;
-  // Query the database and return all authors
+  //Query the database
+  const queryText = "SELECT * FROM authors";
+  const authors = await pool.query(queryText);
+  // return all authors
+  return authors.rows;
 }
 
 export async function getAuthorById(id) {
   // Query the database and return the author with a matching id or null
+  // Query the database - save a variable containing the text for our query called queryText and call
+  // Await.pool function
+  // Pass the query text and id inside the function
+  //
+  const queryText = "SELECT * FROM authors WHERE authors.id = $1";
+  const author = await pool.query(queryText, [id]);
+  return author.rows[0] || null;
 }
 
 export async function createAuthor(author) {
