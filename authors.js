@@ -21,7 +21,13 @@ export async function getAuthorById(id) {
 }
 
 export async function createAuthor(author) {
+  const { firstName, lastName } = author;
   // Query the database to create an author and return the newly created author
+  const queryText = `
+    INSERT INTO authors
+    (first_name, last_name)
+    VALUES ($1, $2) RETURNING *`;
+  const values = [];
 }
 
 export async function updateAuthorById(id, updates) {
